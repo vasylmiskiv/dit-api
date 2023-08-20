@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { ArticlesRepository } from '../articles/articles.repository';
+import { CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class RssScheduleService {
@@ -13,15 +13,13 @@ export class RssScheduleService {
   ) {}
   private readonly logger = new Logger(RssScheduleService.name);
 
-  // @Cron('0 0 */1 * * *')
-  @Cron('*/20 * * * * *')
+  @Cron(CronExpression.EVERY_10_SECONDS)
   async findAll() {
     await firstValueFrom(
       this.httpService.get(
         `${process.env.NATURE_NEWS_URL}&apiKey=${process.env.API_KEY}`,
       ),
     ).then((res) => {
-      console.log(res.data.articles);
       this.articlesRepository.updateArticles(res.data.articles);
     });
   }

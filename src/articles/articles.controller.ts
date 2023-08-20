@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -23,8 +25,25 @@ export class ArticlesController {
   }
 
   @Get()
-  findAll() {
-    return this.articlesService.findAllArticles();
+  async getArticles(
+    @Query('pageSize') pageSize: number,
+    @Query('pageOffset') pageOffset: number,
+  ) {
+    const totalArticles = await this.articlesService.getAmountArticles();
+
+    if (!totalArticles) {
+      throw new NotFoundException('Articles not found');
+    }
+
+    const articles = await this.articlesService.getArticles(
+      pageSize,
+      pageOffset,
+    );
+
+    return {
+      totalArticles,
+      articles,
+    };
   }
 
   @Get(':id')
@@ -33,8 +52,8 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRssDto: UpdateArticleDto) {
-    return this.articlesService.updateArticle(+id, updateRssDto);
+  update(@Param('id') id: string, @Body() dto: UpdateArticleDto) {
+    return this.articlesService.updateArticle(+id, dto);
   }
 
   @UseGuards(JwtAuthGuard)

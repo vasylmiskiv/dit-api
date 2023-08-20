@@ -10,13 +10,23 @@ export class ArticlesRepository {
     @InjectModel(Article.name) private readonly articleModel: Model<Article>,
   ) {}
 
+  async getAmountArticles() {
+    return await this.articleModel.countDocuments();
+  }
+
   async updateArticles(newArticles: Article[]): Promise<void> {
     await this.articleModel.deleteMany({});
     await this.articleModel.insertMany(newArticles);
   }
 
-  async getArticles(): Promise<Article[]> {
-    return await this.articleModel.find().exec();
+  async getArticles(pageSize: number, pageOffset: number): Promise<Article[]> {
+    return (
+      this.articleModel
+        .find()
+        // .sort({ createdAt: -1 })
+        .limit(pageSize)
+        .exec()
+    );
   }
 
   async getArticleById(id: string): Promise<Article> {

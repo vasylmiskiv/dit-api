@@ -7,16 +7,19 @@ import { ArticlesRepository } from './articles.repository';
 export class ArticlesService {
   constructor(private readonly articlesRepository: ArticlesRepository) {}
 
+  async getAmountArticles() {
+    return await this.articlesRepository.getAmountArticles();
+  }
+
   create(createArticleDto: CreateArticleDto) {
     return 'Add a new article';
   }
 
-  async findAllArticles() {
-    const articles = await this.articlesRepository.getArticles();
-
-    if (!articles.length) {
-      throw new NotFoundException('Article list is empty');
-    }
+  async getArticles(pageSize: number, pageOffset: number) {
+    const articles = await this.articlesRepository.getArticles(
+      pageSize,
+      pageOffset,
+    );
 
     return articles;
   }
