@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+
 import { Model } from 'mongoose';
-import { Article } from '../schemes/article.schema';
+import { Article } from './entities/article.schema';
 
 @Injectable()
-export class DatabaseService {
+export class ArticlesRepository {
   constructor(
-    @InjectModel(Article.name) private articleModel: Model<Article>,
+    @InjectModel(Article.name) private readonly articleModel: Model<Article>,
   ) {}
 
   async updateArticles(newArticles: Article[]): Promise<void> {
@@ -18,11 +19,13 @@ export class DatabaseService {
     return await this.articleModel.find().exec();
   }
 
-  async getArticle(id: string): Promise<Article> {
+  async getArticleById(id: string): Promise<Article> {
     return await this.articleModel.findById(id).exec();
   }
 
   async deleteArticle(id: string): Promise<void> {
-    await this.articleModel.findByIdAndDelete(id);
+    const deletedArticle = await this.articleModel.findByIdAndDelete(id);
+
+    return deletedArticle.id;
   }
 }

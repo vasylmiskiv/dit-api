@@ -1,29 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { DatabaseService } from 'src/database/database.service';
+import { ArticlesRepository } from './articles.repository';
 
 @Injectable()
 export class ArticlesService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly articlesRepository: ArticlesRepository) {}
 
   create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new rss';
+    return 'Add a new article';
   }
 
-  findAllArticles() {
-    return this.databaseService.getArticles();
+  async findAllArticles() {
+    const articles = await this.articlesRepository.getArticles();
+
+    if (!articles.length) {
+      throw new NotFoundException('Article list is empty');
+    }
+
+    return articles;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rss`;
+  async findArticle(id: string) {
+    const foundedArticle = await this.articlesRepository.getArticleById(id);
+
+    if (!foundedArticle) {
+      throw new NotFoundException('Article not found');
+    }
+
+    return foundedArticle;
   }
 
-  update(id: number, updateRssDto: UpdateArticleDto) {
-    return `This action updates a #${id} rss`;
+  updateArticle(id: number, updateArticleDto: UpdateArticleDto) {
+    return `Update article`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rss`;
+  removeArticle(id: string) {
+    return this.articlesRepository.deleteArticle(id);
   }
 }
