@@ -37,14 +37,15 @@ export class AuthController {
 
     const token = this.authService.signUser(user.id, user.email, user.username);
 
-    this.setJwtCookie(response, token);
+    // this.setJwtCookie(response, token);
 
-    return user;
+    return {user, token }
   }
 
-  private setJwtCookie(response: Response, token: string) {
-    response.cookie('jwt', token, {
-      httpOnly: true,
-    });
-  }
+  // Added token to cookies if needed
+  // private setJwtCookie(response: Response, token: string) {
+  //   response.cookie('jwt', token, {
+  //     httpOnly: true,
+  //   });
+  // } 
 }

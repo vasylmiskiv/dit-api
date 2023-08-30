@@ -13,7 +13,7 @@ export class RssScheduleService {
   ) {}
   private readonly logger = new Logger(RssScheduleService.name);
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_12_HOURS)
   async findAll() {
     await firstValueFrom(
       this.httpService.get(

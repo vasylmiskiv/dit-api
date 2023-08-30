@@ -28,6 +28,7 @@ export class ArticlesController {
   async getArticles(
     @Query('pageSize') pageSize: number,
     @Query('pageOffset') pageOffset: number,
+    @Query('sortBy') sortBy: string,
   ) {
     const totalArticles = await this.articlesService.getAmountArticles();
 
@@ -38,11 +39,43 @@ export class ArticlesController {
     const articles = await this.articlesService.getArticles(
       pageSize,
       pageOffset,
+      sortBy,
     );
 
+    const totalPages = Math.ceil(totalArticles / pageSize) || 0;
+
     return {
-      totalArticles,
+      totalPages,
       articles,
+    };
+  }
+
+  @Get('search')
+  async searchKeywords(
+    @Query('keywords') keywords: string,
+    @Query('pageSize') pageSize: number,
+    @Query('pageOffset') pageOffset: number,
+    @Query('sortBy') sortBy: string,
+  ) {
+    const decodedKeywords = decodeURIComponent(keywords);
+
+    const totalArticles =
+      await this.articlesService.getAmountArticlesByKeywords(
+        decodedKeywords.split(','),
+      );
+
+    const searchResults = await this.articlesService.getArticlesByKeywords(
+      decodedKeywords.split(','),
+      pageSize,
+      pageOffset,
+      sortBy,
+    );
+
+    const totalPages = Math.ceil(totalArticles / pageSize) || 0;
+
+    return {
+      totalPages,
+      articles: searchResults,
     };
   }
 
