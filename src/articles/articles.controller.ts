@@ -24,31 +24,31 @@ export class ArticlesController {
     return this.articlesService.create(createRssDto);
   }
 
-  @Get()
-  async getArticles(
-    @Query('pageSize') pageSize: number,
-    @Query('pageOffset') pageOffset: number,
-    @Query('sortBy') sortBy: string,
-  ) {
-    const totalArticles = await this.articlesService.getAmountArticles();
+  // @Get()
+  // async getArticles(
+  //   @Query('pageSize') pageSize: number,
+  //   @Query('pageOffset') pageOffset: number,
+  //   @Query('sortBy') sortBy: string,
+  // ) {
+  //   const totalArticles = await this.articlesService.getAmountArticles();
 
-    if (!totalArticles) {
-      throw new NotFoundException('Articles not found');
-    }
+  //   if (!totalArticles) {
+  //     throw new NotFoundException('Articles not found');
+  //   }
 
-    const articles = await this.articlesService.getArticles(
-      pageSize,
-      pageOffset,
-      sortBy,
-    );
+  //   const articles = await this.articlesService.getArticles(
+  //     pageSize,
+  //     pageOffset,
+  //     sortBy,
+  //   );
 
-    const totalPages = Math.ceil(totalArticles / pageSize) || 0;
+  //   const totalPages = Math.ceil(totalArticles / pageSize) || 0;
 
-    return {
-      totalPages,
-      articles,
-    };
-  }
+  //   return {
+  //     totalPages,
+  //     articles,
+  //   };
+  // }
 
   @Get('search')
   async searchKeywords(
@@ -79,14 +79,18 @@ export class ArticlesController {
     };
   }
 
-  @Get(':id')
-  async findArticle(@Param('id') id: string) {
-    return await this.articlesService.findArticle(id);
-  }
+  // @Get(':id')
+  // async findArticle(@Param('id') id: string) {
+  //   return await this.articlesService.findArticle(id);
+  // }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateArticleDto) {
-    return this.articlesService.updateArticle(+id, dto);
+  async updateAnArticle(
+    @Param('id') id: string,
+    @Body() dto: UpdateArticleDto,
+  ) {
+    return this.articlesService.updateAnArticle(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)

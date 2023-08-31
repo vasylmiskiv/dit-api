@@ -58,8 +58,8 @@ export class ArticlesService {
     return foundedArticle;
   }
 
-  updateArticle(id: number, updateArticleDto: UpdateArticleDto) {
-    return `Update article`;
+  async updateAnArticle(id: string, dto: UpdateArticleDto) {
+    return await this.articlesRepository.updateAnArticle(id, dto);
   }
 
   removeArticle(id: string) {

@@ -5,6 +5,8 @@ import { Model } from 'mongoose';
 import { Article } from './entities/article.schema';
 import { sortStrategies } from './strategies/sort-strategies';
 
+import { UpdateArticleDto } from './dto/update-article.dto';
+
 @Injectable()
 export class ArticlesRepository {
   constructor(
@@ -32,6 +34,16 @@ export class ArticlesRepository {
   async updateArticles(newArticles: Article[]): Promise<void> {
     await this.articleModel.deleteMany({});
     await this.articleModel.insertMany(newArticles);
+  }
+
+  async updateAnArticle(id: string, dto: UpdateArticleDto) {
+    const updatedArticle = await this.articleModel.findByIdAndUpdate(id, dto, {
+      new: true,
+    });
+
+    console.log(updatedArticle);
+
+    return updatedArticle;
   }
 
   async getArticles(

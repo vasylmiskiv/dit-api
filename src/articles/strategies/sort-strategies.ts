@@ -11,11 +11,11 @@ class SortByDateAsc implements SortOption {
 }
 
 class SortByAlphaAsc implements SortOption {
-  title = 1;
+  title = -1;
 }
 
 class SortByAlphaDesc implements SortOption {
-  title = -1;
+  title = 1;
 }
 
 export const sortStrategies: { [key: string]: SortOption } = {

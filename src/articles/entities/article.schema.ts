@@ -6,7 +6,7 @@ export class Article extends Document {
   @Prop({
     type: {
       id: { type: String, required: false },
-      name: { type: String, required: true },
+      name: { type: String, required: false },
     },
   })
   source: {
