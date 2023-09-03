@@ -39,7 +39,7 @@ export class AuthController {
 
     // this.setJwtCookie(response, token);
 
-    return {user, token }
+    return { user, token };
   }
 
   // Added token to cookies if needed
@@ -47,5 +47,5 @@ export class AuthController {
   //   response.cookie('jwt', token, {
   //     httpOnly: true,
   //   });
-  // } 
+  // }
 }

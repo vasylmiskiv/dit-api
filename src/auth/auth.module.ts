@@ -5,8 +5,7 @@ import { User, UserSchema } from '../users/entities/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRepository } from '../users/user.repository';
 import { JwtModule } from '@nestjs/jwt';
-
-import { JwtStrategy } from '../strategy/index';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 import * as dotenv from 'dotenv';
 

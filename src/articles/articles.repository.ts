@@ -6,6 +6,7 @@ import { Article } from './entities/article.schema';
 import { sortStrategies } from './strategies/sort-strategies';
 
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { CreateArticleDto } from './dto/create-article.dto';
 
 @Injectable()
 export class ArticlesRepository {
@@ -31,6 +32,7 @@ export class ArticlesRepository {
     return amount;
   }
 
+  // reseed/refresh db
   async updateArticles(newArticles: Article[]): Promise<void> {
     await this.articleModel.deleteMany({});
     await this.articleModel.insertMany(newArticles);
@@ -40,8 +42,6 @@ export class ArticlesRepository {
     const updatedArticle = await this.articleModel.findByIdAndUpdate(id, dto, {
       new: true,
     });
-
-    console.log(updatedArticle);
 
     return updatedArticle;
   }
@@ -93,11 +93,17 @@ export class ArticlesRepository {
     return searchResults;
   }
 
+  async createArticle(dto: CreateArticleDto): Promise<Article> {
+    const newArticle = await this.articleModel.create(dto);
+
+    return newArticle;
+  }
+
   async getArticleById(id: string): Promise<Article> {
     return await this.articleModel.findById(id).exec();
   }
 
-  async deleteArticle(id: string): Promise<void> {
+  async removeArticle(id: string): Promise<void> {
     const deletedArticle = await this.articleModel.findByIdAndDelete(id);
 
     return deletedArticle.id;

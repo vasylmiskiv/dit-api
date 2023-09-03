@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -18,37 +19,6 @@ import { JwtAuthGuard } from '../utils/jwt.guard';
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
-
-  @Post()
-  create(@Body() createRssDto: CreateArticleDto) {
-    return this.articlesService.create(createRssDto);
-  }
-
-  // @Get()
-  // async getArticles(
-  //   @Query('pageSize') pageSize: number,
-  //   @Query('pageOffset') pageOffset: number,
-  //   @Query('sortBy') sortBy: string,
-  // ) {
-  //   const totalArticles = await this.articlesService.getAmountArticles();
-
-  //   if (!totalArticles) {
-  //     throw new NotFoundException('Articles not found');
-  //   }
-
-  //   const articles = await this.articlesService.getArticles(
-  //     pageSize,
-  //     pageOffset,
-  //     sortBy,
-  //   );
-
-  //   const totalPages = Math.ceil(totalArticles / pageSize) || 0;
-
-  //   return {
-  //     totalPages,
-  //     articles,
-  //   };
-  // }
 
   @Get('search')
   async searchKeywords(
@@ -79,10 +49,19 @@ export class ArticlesController {
     };
   }
 
-  // @Get(':id')
-  // async findArticle(@Param('id') id: string) {
-  //   return await this.articlesService.findArticle(id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async createArticle(@Body() dto: CreateArticleDto) {
+    const newArticle = this.articlesService.createArticle(dto);
+
+    if (!newArticle) {
+      throw new BadRequestException({
+        message: 'Something went wrong when created an article',
+      });
+    }
+
+    return { message: 'Article has been successfully created' };
+  }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -90,12 +69,22 @@ export class ArticlesController {
     @Param('id') id: string,
     @Body() dto: UpdateArticleDto,
   ) {
-    return this.articlesService.updateAnArticle(id, dto);
+    const updatedArticle = await this.articlesService.updateAnArticle(id, dto);
+
+    return { message: 'Article has been successfully updated', updatedArticle };
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async removeArticle(@Param('id') id: string) {
-    return this.articlesService.removeArticle(id);
+    const deletedAticle = this.articlesService.removeArticle(id);
+
+    if (!deletedAticle) {
+      throw new BadRequestException({
+        message: 'Something went wrong when deleted an article',
+      });
+    }
+
+    return { message: 'Article has been successfully deleted' };
   }
 }

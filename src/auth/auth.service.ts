@@ -21,7 +21,9 @@ export class AuthService {
   ) {}
 
   async signUp(dto: RegisterUserDto): Promise<any> {
-    const userExists = await this.userRepository.findUserByEmail(dto);
+    const { email } = dto;
+
+    const userExists = await this.userRepository.findUserByEmail(email);
 
     if (userExists) {
       throw new UserRegistrationException('User already exists');
@@ -39,7 +41,9 @@ export class AuthService {
   }
 
   async signIn(dto: LoginUserDto): Promise<User> {
-    const user = await this.userRepository.findUserByEmail(dto);
+    const { email } = dto;
+
+    const user = await this.userRepository.findUserByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');

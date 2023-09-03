@@ -17,8 +17,8 @@ export class ArticlesService {
     return count;
   }
 
-  create(createArticleDto: CreateArticleDto) {
-    return 'Add a new article';
+  async createArticle(dto: CreateArticleDto) {
+    const newArticle = await this.articlesRepository.createArticle(dto);
   }
 
   async getArticles(pageSize: number, pageOffset: number, sortBy: string) {
@@ -63,6 +63,6 @@ export class ArticlesService {
   }
 
   removeArticle(id: string) {
-    return this.articlesRepository.deleteArticle(id);
+    return this.articlesRepository.removeArticle(id);
   }
 }
