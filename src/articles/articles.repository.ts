@@ -32,7 +32,6 @@ export class ArticlesRepository {
     return amount;
   }
 
-  // reseed/refresh db
   async updateArticles(newArticles: Article[]): Promise<void> {
     await this.articleModel.deleteMany({});
     await this.articleModel.insertMany(newArticles);
@@ -106,6 +105,7 @@ export class ArticlesRepository {
   async removeArticle(id: string): Promise<void> {
     const deletedArticle = await this.articleModel.findByIdAndDelete(id);
 
-    return deletedArticle.id;
+    // in case if article has been already deleted by another user returns null or if it just doesn't exist btw
+    return deletedArticle.id || null;
   }
 }

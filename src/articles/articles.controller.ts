@@ -81,7 +81,7 @@ export class ArticlesController {
 
     if (!deletedAticle) {
       throw new BadRequestException({
-        message: 'Something went wrong when deleted an article',
+        message: `Article doesn't exist or already deleted`,
       });
     }
 
