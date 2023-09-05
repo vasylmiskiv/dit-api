@@ -13,14 +13,15 @@ import { ArticlesModule } from './articles/articles.module';
 import { ArticlesController } from './articles/articles.controller';
 import { ArticlesService } from './articles/articles.service';
 import { ArticlesRepository } from './articles/articles.repository';
+import { Article, ArticleSchema } from './articles/entities/article.schema';
 
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth//auth.controller';
 
 import { UserRepository } from './users/user.repository';
-import { Article, ArticleSchema } from './articles/entities/article.schema';
-import { User, UserSchema } from './users/entities/user.schema';
+
 import { UsersModule } from './users/users.module';
+import { User, UserSchema } from './users/entities/user.schema';
 
 @Module({
   imports: [

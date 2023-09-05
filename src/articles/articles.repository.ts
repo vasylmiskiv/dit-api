@@ -105,7 +105,6 @@ export class ArticlesRepository {
   async removeArticle(id: string): Promise<void> {
     const deletedArticle = await this.articleModel.findByIdAndDelete(id);
 
-    // in case if article has been already deleted by another user returns null or if it just doesn't exist btw
     return deletedArticle.id || null;
   }
 }

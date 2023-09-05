@@ -5,14 +5,17 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+
+import { UserRepository } from '../users/user.repository';
+
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import * as bcrypt from 'bcrypt';
-import { UserRepository } from '../users/user.repository';
-import { JwtService } from '@nestjs/jwt';
-import { UserRegistrationException } from './exceptions/user-registration.exception';
+
 import { User } from 'src/users/entities/user.schema';
 
+import { UserRegistrationException } from './exceptions/user-registration.exception';
 @Injectable()
 export class AuthService {
   constructor(

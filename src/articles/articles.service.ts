@@ -14,11 +14,14 @@ export class ArticlesService {
   async getAmountArticlesByKeywords(keywords: string[]): Promise<number> {
     const count =
       await this.articlesRepository.getAmountArticlesByKeywords(keywords);
+
     return count;
   }
 
   async createArticle(dto: CreateArticleDto) {
     const newArticle = await this.articlesRepository.createArticle(dto);
+
+    return newArticle;
   }
 
   async getArticles(pageSize: number, pageOffset: number, sortBy: string) {
@@ -59,7 +62,12 @@ export class ArticlesService {
   }
 
   async updateAnArticle(id: string, dto: UpdateArticleDto) {
-    return await this.articlesRepository.updateAnArticle(id, dto);
+    const updatedArticle = await this.articlesRepository.updateAnArticle(
+      id,
+      dto,
+    );
+
+    return updatedArticle;
   }
 
   removeArticle(id: string) {

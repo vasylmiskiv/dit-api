@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { ArticlesRepository } from '../articles/articles.repository';
@@ -11,7 +11,6 @@ export class RssScheduleService {
     private readonly httpService: HttpService,
     private readonly articlesRepository: ArticlesRepository,
   ) {}
-  private readonly logger = new Logger(RssScheduleService.name);
 
   @Cron(CronExpression.EVERY_HOUR)
   async findAll() {

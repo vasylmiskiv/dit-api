@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { ArticlesService } from './articles.service';
-import { ArticlesController } from './articles.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Article, ArticleSchema } from './entities/article.schema';
-import { ArticlesRepository } from './articles.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
-import { UserRepository } from 'src/users/user.repository';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { Article, ArticleSchema } from './entities/article.schema';
 import { User, UserSchema } from 'src/users/entities/user.schema';
+
+import { ArticlesService } from './articles.service';
+import { ArticlesController } from './articles.controller';
+import { ArticlesRepository } from './articles.repository';
+
+import { UserRepository } from 'src/users/user.repository';
+
+import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 
 @Module({
   imports: [

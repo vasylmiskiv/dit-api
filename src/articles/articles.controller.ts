@@ -8,19 +8,55 @@ import {
   Delete,
   UseGuards,
   Query,
-  NotFoundException,
   BadRequestException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { JwtAuthGuard } from '../utils/jwt.guard';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('articles')
+@ApiTags('Articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Get('search')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Search articles by keywords',
+    description: 'Search articles by keywords.',
+  })
+  @ApiQuery({
+    name: 'keywords',
+    description: 'Comma-separated keywords',
+    required: true,
+  })
+  @ApiQuery({ name: 'pageSize', description: 'Number of articles per page' })
+  @ApiQuery({ name: 'pageOffset', description: 'Page offset' })
+  @ApiQuery({ name: 'sortBy', description: 'Sorting criteria' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Search results',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid input parameters',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
   async searchKeywords(
     @Query('keywords') keywords: string,
     @Query('pageSize') pageSize: number,
@@ -51,12 +87,22 @@ export class ArticlesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Create a new article',
+    description: 'Create a new article.',
+  })
+  @ApiCreatedResponse({
+    description: 'Article successfully created.',
+    type: CreateArticleDto,
+  })
+  @ApiBearerAuth()
   async createArticle(@Body() dto: CreateArticleDto) {
     const newArticle = this.articlesService.createArticle(dto);
 
     if (!newArticle) {
       throw new BadRequestException({
-        message: 'Something went wrong when created an article',
+        message: 'Something went wrong when creating an article',
       });
     }
 
@@ -65,6 +111,12 @@ export class ArticlesController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update an article',
+    description: 'Update an article by ID.',
+  })
+  @ApiBearerAuth()
+  @ApiParam({ name: 'id', description: 'Article ID' })
   async updateAnArticle(
     @Param('id') id: string,
     @Body() dto: UpdateArticleDto,
@@ -76,6 +128,12 @@ export class ArticlesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete an article',
+    description: 'Delete an article by ID.',
+  })
+  @ApiBearerAuth()
+  @ApiParam({ name: 'id', description: 'Article ID' })
   async removeArticle(@Param('id') id: string) {
     const deletedAticle = this.articlesService.removeArticle(id);
 

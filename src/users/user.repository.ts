@@ -1,13 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.schema';
 import * as bcrypt from 'bcrypt';
-import { LoginUserDto } from 'src/auth/dto/login-user.dto';
 
 @Injectable()
 export class UserRepository {
