@@ -23,7 +23,8 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 # `NestJS`  App
-
+##### [Link to deployed backend application](https://vmiskiv-devit-server-api.onrender.com/api-documentation) 
+###### * need to wait around 2 minutes because the server has been deployed on free cloud platform
 
  ##### Step 1:  Clone or download `Nest` repo and install dependecies
 - Make sure that Node is installed on your machine (requires node `v18.0` and higher) otherwise download LTS version https://nodejs.org/en/download
