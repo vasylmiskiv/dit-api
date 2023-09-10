@@ -4,9 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HttpModule } from '@nestjs/axios';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
 import { RssScheduleService } from './rss-schedule/rss-schedule.service';
 
 import { ArticlesModule } from './articles/articles.module';
@@ -22,26 +19,30 @@ import { UserRepository } from './users/user.repository';
 
 import { UsersModule } from './users/users.module';
 import { User, UserSchema } from './users/entities/user.schema';
+import { ConfigService } from './config/config.service';
+
+import configuration from './config/configuration';
 
 @Module({
   imports: [
     ArticlesModule,
     AuthModule,
     ScheduleModule.forRoot(),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
     HttpModule,
-    MongooseModule.forRoot(process.env.MONGODB_URI),
     MongooseModule.forFeature([{ name: Article.name, schema: ArticleSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UsersModule,
   ],
-  controllers: [AppController, AuthController, ArticlesController],
+  controllers: [AuthController, ArticlesController],
   providers: [
-    AppService,
     RssScheduleService,
     ArticlesRepository,
     UserRepository,
     ArticlesService,
+    ConfigService,
   ],
 })
 export class AppModule {}
