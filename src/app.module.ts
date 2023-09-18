@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HttpModule } from '@nestjs/axios';
@@ -20,6 +21,7 @@ import { User, UserSchema } from './users/entities/user.schema';
 
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
@@ -28,9 +30,12 @@ import { AppConfigService } from './config/config.service';
     AuthModule,
     ScheduleModule.forRoot(),
     HttpModule,
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],
-      useFactory: async (appConfigService: AppConfigService) => ({
+      useFactory: (appConfigService: AppConfigService) => ({
         uri: appConfigService.mongodb,
       }),
       inject: [AppConfigService],
