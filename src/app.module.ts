@@ -18,6 +18,9 @@ import { AuthController } from './auth/auth.controller';
 import { UserRepository } from './users/user.repository';
 import { UsersModule } from './users/users.module';
 import { User, UserSchema } from './users/entities/user.schema';
+import { ConfigService } from './config/config.service';
+
+import configuration from './config/configuration';
 
 import { AppConfigModule } from './config/config.module';
 import { AppConfigService } from './config/config.service';
@@ -40,6 +43,7 @@ import configuration from './config/configuration';
       }),
       inject: [AppConfigService],
     }),
+    HttpModule,
     MongooseModule.forFeature([{ name: Article.name, schema: ArticleSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UsersModule,
@@ -51,6 +55,7 @@ import configuration from './config/configuration';
     ArticlesRepository,
     UserRepository,
     ArticlesService,
+    ConfigService,
   ],
 })
 export class AppModule {}
