@@ -4,7 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { ArticlesRepository } from '../articles/articles.repository';
 import { CronExpression } from '@nestjs/schedule';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RssScheduleService {
