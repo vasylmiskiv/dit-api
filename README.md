@@ -22,7 +22,7 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-# `NestJS`  App
+# NestJS App
 ##### [Link to deployed backend application](https://vmiskiv-devit-server-api.onrender.com/api-documentation) 
 ###### * need to wait around 2 minutes because the server has been deployed on free cloud platform
 
